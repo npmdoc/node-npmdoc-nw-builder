@@ -1,4 +1,7 @@
-# api documentation for  [nw-builder (v3.2.0)](https://github.com/mllrsohn/nw-builder)  [![npm package](https://img.shields.io/npm/v/npmdoc-nw-builder.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-nw-builder) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-nw-builder.svg)](https://travis-ci.org/npmdoc/node-npmdoc-nw-builder)
+# npmdoc-nw-builder
+
+#### basic api documentation for  [nw-builder (v3.2.0)](https://github.com/mllrsohn/nw-builder)  [![npm package](https://img.shields.io/npm/v/npmdoc-nw-builder.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-nw-builder) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-nw-builder.svg)](https://travis-ci.org/npmdoc/node-npmdoc-nw-builder)
+
 #### nw-builder
 
 [![NPM](https://nodei.co/npm/nw-builder.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/nw-builder)
