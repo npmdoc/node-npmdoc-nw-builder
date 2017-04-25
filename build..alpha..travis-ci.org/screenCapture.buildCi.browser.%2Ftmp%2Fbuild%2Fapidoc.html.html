@@ -65,35 +65,8 @@
 
         <li>
 
-            <a class="apidocElementLiA" href="#apidoc.element.nw-builder.Version">
-            function <span class="apidocSignatureSpan">nw-builder.</span>Version
-            <span class="apidocSignatureSpan">(args)</span>
-            </a>
-
-        </li>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.nw-builder.detectCurrentPlatform">
-            function <span class="apidocSignatureSpan">nw-builder.</span>detectCurrentPlatform
-            <span class="apidocSignatureSpan">()</span>
-            </a>
-
-        </li>
-
-        <li>
-
             <a class="apidocElementLiA" href="#apidoc.element.nw-builder.super_">
             function <span class="apidocSignatureSpan">nw-builder.</span>super_
-            <span class="apidocSignatureSpan">()</span>
-            </a>
-
-        </li>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.nw-builder.toString">
-            function <span class="apidocSignatureSpan">nw-builder.</span>toString
             <span class="apidocSignatureSpan">()</span>
             </a>
 
@@ -114,32 +87,6 @@
         <li>
 
             <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">nw-builder.</span>versions</span>
-
-        </li>
-
-    </ol></li>
-
-    <li class="apidocModuleLi"><a href="#apidoc.module.nw-builder.Version">module nw-builder.Version</a><ol>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.nw-builder.Version.Version">
-            function <span class="apidocSignatureSpan">nw-builder.</span>Version
-            <span class="apidocSignatureSpan">(args)</span>
-            </a>
-
-        </li>
-
-    </ol></li>
-
-    <li class="apidocModuleLi"><a href="#apidoc.module.nw-builder.detectCurrentPlatform">module nw-builder.detectCurrentPlatform</a><ol>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.nw-builder.detectCurrentPlatform.detectCurrentPlatform">
-            function <span class="apidocSignatureSpan">nw-builder.</span>detectCurrentPlatform
-            <span class="apidocSignatureSpan">()</span>
-            </a>
 
         </li>
 
@@ -197,19 +144,6 @@
             <a class="apidocElementLiA" href="#apidoc.element.nw-builder.downloader.stripRootFolder">
             function <span class="apidocSignatureSpan">nw-builder.downloader.</span>stripRootFolder
             <span class="apidocSignatureSpan">(extracted)</span>
-            </a>
-
-        </li>
-
-    </ol></li>
-
-    <li class="apidocModuleLi"><a href="#apidoc.module.nw-builder.toString">module nw-builder.toString</a><ol>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.nw-builder.toString.toString">
-            function <span class="apidocSignatureSpan">nw-builder.</span>toString
-            <span class="apidocSignatureSpan">()</span>
             </a>
 
         </li>
@@ -414,92 +348,6 @@
 
 
     <h2>
-        <a href="#apidoc.element.nw-builder.Version" id="apidoc.element.nw-builder.Version">
-        function <span class="apidocSignatureSpan">nw-builder.</span>Version
-        <span class="apidocSignatureSpan">(args)</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">function Version(args){
-    var generatePlatformUrls,
-        result = {
-            isLegacy: semver.satisfies(args.version, '&lt;0.12.3'),
-            name: semver.satisfies(args.version, '&gt;=0.12.0 || ~0.12.0-alpha') ? 'nwjs' : 'node-webkit',
-            version: args.version
-        };
-
-    // 0.12.3 is an exception that is in the manifest but is pretty much a legacy version
-    if(result.isLegacy || args.version === '0.12.3'){
-        generatePlatformUrls = function(version,flavors, supportedPlatforms){
-            var platformUrls = {};
-            supportedPlatforms.forEach(function (supportedPlatform) {
-                flavors.forEach(function(flavor) {
-                    platformUrls[supportedPlatform + '-' + flavor] = args.downloadUrl + _.template(platforms[supportedPlatform].
-versionNameTemplate)(result);
-                });
-            });
-            return platformUrls;
-        };
-    }
-    else {
-        var fixPlatformName = function(platform){
-            return platform.replace('32', '-ia32').replace('64', '-x64');
-        };
-
-        var mapPlatformToExtension = function(platform){
-            if(platform.indexOf('linux') === 0){
-                return 'tar.gz'
-            }
-
-            return 'zip'
-        };
-
-        generatePlatformUrls = function(version, flavors, supportedPlatforms){
-            var platformUrls = {};
-            supportedPlatforms.forEach(function(platform){
-                flavors.forEach(function(flavor) {
-                    platformUrls[platform + '-' + flavor] = args.downloadUrl + 'v' + version + '/nwjs' + (flavor === 'normal' ? '' : '-' +
-flavor) + '-v' + version + '-' + fixPlatformName(platform)
-                        + '.' + mapPlatformToExtension(platform);
-                });
-            });
-            return platformUrls;
-        };
-    }
-
-    result.platforms = generatePlatformUrls(args.version, args.flavors, args.supportedPlatforms);
-    return result;
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
-    </ul>
-
-
-
-    <h2>
-        <a href="#apidoc.element.nw-builder.detectCurrentPlatform" id="apidoc.element.nw-builder.detectCurrentPlatform">
-        function <span class="apidocSignatureSpan">nw-builder.</span>detectCurrentPlatform
-        <span class="apidocSignatureSpan">()</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">detectCurrentPlatform = function () {
-	switch(process.platform) {
-        case 'darwin':
-            return process.arch === 'x64' ? 'osx64' : 'osx32';
-
-        case 'win32':
-            return (process.arch === 'x64' || process.env.hasOwnProperty('PROCESSOR_ARCHITEW6432')) ? 'win64' : 'win32';
-
-        case 'linux':
-            return process.arch === 'x64' ? 'linux64' : 'linux32';
-	}
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
-    </ul>
-
-
-
-    <h2>
         <a href="#apidoc.element.nw-builder.super_" id="apidoc.element.nw-builder.super_">
         function <span class="apidocSignatureSpan">nw-builder.</span>super_
         <span class="apidocSignatureSpan">()</span>
@@ -514,136 +362,9 @@ flavor) + '-v' + version + '-' + fixPlatformName(platform)
 
 
 
-    <h2>
-        <a href="#apidoc.element.nw-builder.toString" id="apidoc.element.nw-builder.toString">
-        function <span class="apidocSignatureSpan">nw-builder.</span>toString
-        <span class="apidocSignatureSpan">()</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">toString = function () {
-    return text;
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-        done.resolve({files:files, destination:destination});
-    })
-    .extract({
-        path: destination,
-        filter: function(entry) {
-            files.push({
-                path: entry.path,
-                mode: entry.mode.<span class="apidocCodeKeywordSpan">toString</span>(8)
-            });
-
-            return true;
-        }
-    });
-
-return done.promise;
-...</pre></li>
-    </ul>
 
 
 
-
-
-
-
-
-</div>
-
-<div class="apidocSectionDiv">
-<h1><a href="#apidoc.module.nw-builder.Version" id="apidoc.module.nw-builder.Version">module nw-builder.Version</a></h1>
-
-
-    <h2>
-        <a href="#apidoc.element.nw-builder.Version.Version" id="apidoc.element.nw-builder.Version.Version">
-        function <span class="apidocSignatureSpan">nw-builder.</span>Version
-        <span class="apidocSignatureSpan">(args)</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">function Version(args){
-    var generatePlatformUrls,
-        result = {
-            isLegacy: semver.satisfies(args.version, '&lt;0.12.3'),
-            name: semver.satisfies(args.version, '&gt;=0.12.0 || ~0.12.0-alpha') ? 'nwjs' : 'node-webkit',
-            version: args.version
-        };
-
-    // 0.12.3 is an exception that is in the manifest but is pretty much a legacy version
-    if(result.isLegacy || args.version === '0.12.3'){
-        generatePlatformUrls = function(version,flavors, supportedPlatforms){
-            var platformUrls = {};
-            supportedPlatforms.forEach(function (supportedPlatform) {
-                flavors.forEach(function(flavor) {
-                    platformUrls[supportedPlatform + '-' + flavor] = args.downloadUrl + _.template(platforms[supportedPlatform].
-versionNameTemplate)(result);
-                });
-            });
-            return platformUrls;
-        };
-    }
-    else {
-        var fixPlatformName = function(platform){
-            return platform.replace('32', '-ia32').replace('64', '-x64');
-        };
-
-        var mapPlatformToExtension = function(platform){
-            if(platform.indexOf('linux') === 0){
-                return 'tar.gz'
-            }
-
-            return 'zip'
-        };
-
-        generatePlatformUrls = function(version, flavors, supportedPlatforms){
-            var platformUrls = {};
-            supportedPlatforms.forEach(function(platform){
-                flavors.forEach(function(flavor) {
-                    platformUrls[platform + '-' + flavor] = args.downloadUrl + 'v' + version + '/nwjs' + (flavor === 'normal' ? '' : '-' +
-flavor) + '-v' + version + '-' + fixPlatformName(platform)
-                        + '.' + mapPlatformToExtension(platform);
-                });
-            });
-            return platformUrls;
-        };
-    }
-
-    result.platforms = generatePlatformUrls(args.version, args.flavors, args.supportedPlatforms);
-    return result;
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
-    </ul>
-
-
-</div>
-
-<div class="apidocSectionDiv">
-<h1><a href="#apidoc.module.nw-builder.detectCurrentPlatform" id="apidoc.module.nw-builder.detectCurrentPlatform">module nw-builder.detectCurrentPlatform</a></h1>
-
-
-    <h2>
-        <a href="#apidoc.element.nw-builder.detectCurrentPlatform.detectCurrentPlatform" id="apidoc.element.nw-builder.detectCurrentPlatform.detectCurrentPlatform">
-        function <span class="apidocSignatureSpan">nw-builder.</span>detectCurrentPlatform
-        <span class="apidocSignatureSpan">()</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">detectCurrentPlatform = function () {
-	switch(process.platform) {
-        case 'darwin':
-            return process.arch === 'x64' ? 'osx64' : 'osx32';
-
-        case 'win32':
-            return (process.arch === 'x64' || process.env.hasOwnProperty('PROCESSOR_ARCHITEW6432')) ? 'win64' : 'win32';
-
-        case 'linux':
-            return process.arch === 'x64' ? 'linux64' : 'linux32';
-	}
-}</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
-    </ul>
 
 
 </div>
@@ -679,7 +400,23 @@ flavor) + '-v' + version + '-' + fixPlatformName(platform)
 
     return !missing;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+NwBuilder.prototype.isPlatformCached = function (platformName, platform, version, flavor) {
+this.setPlatformCacheDirectory(platformName, platform, version, flavor);
+if (this.options.forceDownload) {
+    return false;
+}
+this.preparePlatformFiles(platformName, platform, version);
+return Downloader.<span class="apidocCodeKeywordSpan">checkCache</span>(platform.cache, platform.files);
+};
+
+// returns a Boolean; true if the desired platform is supported
+NwBuilder.prototype.preparePlatformFiles = function(platformName, platform, version) {
+// return if platform.files is already prepared
+if(Object.keys(platform.files)[0] !== Object.keys(platforms[platformName].files)[0]){
+    return true;
+...</pre></li>
     </ul>
 
 
@@ -695,7 +432,23 @@ flavor) + '-v' + version + '-' + fixPlatformName(platform)
     bar &amp;&amp; bar.terminate();
     bar = null;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    } else {
+        self.emit('log', 'Using cache for: ' + name);
+    }
+});
+
+return Promise.all(downloads)
+    .then(function(data) {
+        Downloader.<span class="apidocCodeKeywordSpan">clearProgressbar</span>();
+        return data;
+    });
+};
+
+NwBuilder.prototype.buildGypModules = function () {
+// @todo
+// If we trigger a rebuild we have to copy
+...</pre></li>
     </ul>
 
 
@@ -772,7 +525,25 @@ flavor) + '-v' + version + '-' + fixPlatformName(platform)
 
     return done.promise;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+}
+
+fs.mkdirpSync(platform.cache);
+self.emit('log', 'Create cache folder in ' + path.resolve(self.options.cacheDir, self._version.version + '
+;-' + self._version.flavor));
+
+if(!self.isPlatformCached(name, platform, self._version.version, self._version.flavor)) {
+    downloads.push(
+        Downloader.<span class="apidocCodeKeywordSpan">downloadAndUnpack</span>(platform.cache, platform.url)
+            .catch(function(err){
+                if(err.statusCode === 404){
+                    self.emit('log', 'ERROR: The version '+self._version.version+ ' (' + self._version
+.flavor + ') does not have a corresponding build posted at ' + self.options.downloadUrl + '. Please choose a version
+ from that list.');
+                } else {
+                    self.emit('log', err.msg);
+                }
+...</pre></li>
     </ul>
 
 
@@ -932,40 +703,6 @@ if (extention === '.zip') {
 </div>
 
 <div class="apidocSectionDiv">
-<h1><a href="#apidoc.module.nw-builder.toString" id="apidoc.module.nw-builder.toString">module nw-builder.toString</a></h1>
-
-
-    <h2>
-        <a href="#apidoc.element.nw-builder.toString.toString" id="apidoc.element.nw-builder.toString.toString">
-        function <span class="apidocSignatureSpan">nw-builder.</span>toString
-        <span class="apidocSignatureSpan">()</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">function toString() { [native code] }</pre></li>
-    <li>example usage<pre class="apidocCodePre">...
-        done.resolve({files:files, destination:destination});
-    })
-    .extract({
-        path: destination,
-        filter: function(entry) {
-            files.push({
-                path: entry.path,
-                mode: entry.mode.<span class="apidocCodeKeywordSpan">toString</span>(8)
-            });
-
-            return true;
-        }
-    });
-
-return done.promise;
-...</pre></li>
-    </ul>
-
-
-</div>
-
-<div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.nw-builder.utils" id="apidoc.module.nw-builder.utils">module nw-builder.utils</a></h1>
 
 
@@ -1044,7 +781,24 @@ matches.forEach(function(file) {
         });
     });
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+                    return !/nwjs\.app\/Contents\/Resources\/[^.]+\.lproj(\/|$)/.test(filepath);
+                };
+            }
+            // rename executable to app name
+            destFile = self.options.appName + path.extname(destFile);
+        }
+
+        copiedFiles.push(Utils.<span class="apidocCodeKeywordSpan">copyFile</span>(file, path.join(platform.releasePath, destFile
+), self, options));
+        platform.files.push(destFile);
+    });
+
+    return;
+}
+
+// legacy
+...</pre></li>
     </ul>
 
 
@@ -1116,7 +870,23 @@ matches.forEach(function(file) {
             return writeFile(plistOutput, plist.build(info));
         });
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+                    name: self.options.appName,
+                    version: self.options.appVersion,
+                    copyright: self._appPkg.copyright
+                },
+                self.options.macPlist
+            );
+
+            allDone.push(Utils.<span class="apidocCodeKeywordSpan">editPlist</span>(PlistPath, PlistPath, plistOptions));
+        }
+    });
+
+    return Promise.all(allDone);
+};
+
+NwBuilder.prototype.handleWinApp = function () {
+...</pre></li>
     </ul>
 
 
@@ -1172,7 +942,24 @@ matches.forEach(function(file) {
 
     });
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    return;
+}
+
+
+// create (or don't create) a ZIP for multiple platforms
+new Promise(function(resolve, reject) {
+    if(numberOfPlatformsWithoutOverrides &gt; 1){
+        Utils.<span class="apidocCodeKeywordSpan">generateZipFile</span>(self._files, self, null, zipOptions).then(function (zip
+) {
+            resolve(zip);
+        }, reject);
+    }
+    else {
+        resolve();
+    }
+})
+...</pre></li>
     </ul>
 
 
@@ -1222,7 +1009,22 @@ matches.forEach(function(file) {
         });
     });
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    return hasCallback ? true : done.promise;
+};
+
+
+NwBuilder.prototype.checkFiles = function () {
+    var self = this;
+
+    return Utils.<span class="apidocCodeKeywordSpan">getFileList</span>(this.options.files).then(function (data) {
+
+self._appPkg = data.json;
+self._files = data.files;
+
+return Utils.getPackageInfo(self._appPkg).then(function (appPkg) {
+    self._appPkg = appPkg;
+...</pre></li>
     </ul>
 
 
@@ -1252,7 +1054,23 @@ matches.forEach(function(file) {
         });
     });
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+    var self = this;
+
+    return Utils.getFileList(this.options.files).then(function (data) {
+
+self._appPkg = data.json;
+self._files = data.files;
+
+return Utils.<span class="apidocCodeKeywordSpan">getPackageInfo</span>(self._appPkg).then(function (appPkg) {
+    self._appPkg = appPkg;
+
+    if(!self.options.appName || !self.options.appVersion) {
+        self.options.appName = (self.options.appName ? self.options.appName : appPkg.name);
+        self.options.appVersion = (self.options.appVersion ? self.options.appVersion : appPkg.version);
+    }
+});
+...</pre></li>
     </ul>
 
 
@@ -1280,7 +1098,24 @@ matches.forEach(function(file) {
 
     return _.merge(obj, custom);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var PlistPath = path.resolve(platform.releasePath, self.options.appName+'.app', 'Contents', 'Info.plist
+');
+
+// If the macPlist is a string we just copy the file
+if(typeof self.options.macPlist === 'string') {
+    allDone.push(Utils.copyFile(self.options.macPlist, PlistPath, self));
+} else {
+    // Setup the Plist
+    var plistOptions = Utils.<span class="apidocCodeKeywordSpan">getPlistOptions</span>(
+        {
+            name: self.options.appName,
+            version: self.options.appVersion,
+            copyright: self._appPkg.copyright
+        },
+        self.options.macPlist
+    );
+...</pre></li>
     </ul>
 
 
@@ -1311,7 +1146,22 @@ matches.forEach(function(file) {
         zipStream.pipe(writeStream);
     });
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+            path.resolve(self.getResourcesDirectoryPath(platform), 'app.nw'),
+            self
+        ));
+    } else {
+        var executableToMergeWith = self._version.isLegacy ? _.first(platform.files) : self.getExecutableName(name);
+
+        // We cat the app.nw file into the .exe / nw
+        copyPromises.push(Utils.<span class="apidocCodeKeywordSpan">mergeFiles</span>(
+            path.resolve(platform.releasePath, executableToMergeWith),
+            self.getZipFile(name),
+            platform.chmod
+        ));
+    }
+});
+...</pre></li>
     </ul>
 
 
@@ -1371,7 +1221,24 @@ pathDepth: function(absolutePath) {
         })
         .then(this.getVersion);
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+};
+
+NwBuilder.prototype.resolveLatestVersion = function () {
+    var self = this;
+
+    if(self.options.version !== 'latest') return Promise.resolve();
+
+    return NwVersions.<span class="apidocCodeKeywordSpan">getLatestVersion</span>(self.options.downloadUrl, self.options.manifestUrl
+, self.options.flavor).then(function(latestVersion){
+        self.emit('log', 'Latest Version: v' + latestVersion.version);
+        self.options.version = latestVersion.version;
+        return latestVersion;
+    });
+};
+
+NwBuilder.prototype.checkVersion = function () {
+...</pre></li>
     </ul>
 
 
@@ -1396,7 +1263,23 @@ pathDepth: function(absolutePath) {
                 : Promise.reject('Version ' + args.desiredVersion + ' not found.');
         });
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+if(!semver.valid(version)){
+    return Promise.reject('The version ' + version + ' is not valid.');
+}
+
+
+var getVersionFromManifest = function(){
+    return NwVersions.<span class="apidocCodeKeywordSpan">getVersion</span>({
+        desiredVersion: version,
+        downloadUrl: self.options.downloadUrl,
+        manifestUrl: self.options.manifestUrl,
+        flavor: flavor
+    });
+};
+var getVersion;
+...</pre></li>
     </ul>
 
 
